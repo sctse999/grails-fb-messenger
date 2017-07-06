@@ -1,0 +1,18 @@
+model {
+    String recipientId
+    String title
+    List replies;
+}
+json {
+    recipient {
+        id(recipientId)
+    }
+    message {
+        text(title)
+        quick_replies(
+                replies.collect() {
+                    [content_type: "text", title: "${it}", payload: "${it}"]
+                }
+        )
+    }
+}

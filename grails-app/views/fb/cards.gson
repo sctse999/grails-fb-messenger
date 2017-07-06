@@ -1,0 +1,35 @@
+model {
+    String recipientId
+    List elements;
+}
+json {
+    recipient {
+        id(recipientId)
+    }
+    message {
+        attachment {
+            type("template")
+            payload {
+                template_type("generic")
+                elements(
+                        elements.collect() {
+                            [
+                                    title    : "${it.title}",
+
+                                    image_url: "${it.imageUrl}",
+
+                                    buttons: it.buttons.collect() {
+                                        [
+                                            "type": "postback",
+                                            "payload": "${it.postback}",
+                                            "title": "${it.text}"
+                                        ]
+                                    }
+
+                            ]
+                        }
+                )
+            }
+        }
+    }
+}

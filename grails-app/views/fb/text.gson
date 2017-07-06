@@ -1,0 +1,12 @@
+model {
+    String recipientId
+    String text
+}
+json {
+    recipient {
+        id(recipientId)
+    }
+    message {
+        text(text)
+    }
+}

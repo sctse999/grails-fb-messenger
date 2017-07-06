@@ -1,0 +1,17 @@
+model {
+    String recipientId
+    String url
+}
+json {
+    recipient {
+        id(recipientId)
+    }
+    message {
+        attachment {
+            type("image")
+            payload {
+                url("generic")
+            }
+        }
+    }
+}
