@@ -70,15 +70,14 @@ bootRun {
 bootRepackage.enabled = false
 grailsPublish {
     // TODO: Provide values here
-    user = 'user'
-    key = 'key'
-    githubSlug = 'foo/bar'
+    userOrg = 'proactivehk' // Optional
+    githubSlug = 'sctse999/grails-fb-messenger'
     license {
         name = 'Apache-2.0'
     }
-    title = "My Plugin"
-    desc = "Full plugin description"
-    developers = [johndoe:"John Doe"]
+    title = "fb-messenger"
+    desc = "A grails plugin for facebook messenger"
+    developers = [sctse999:"Jonathan Tse"]
     portalUser = ""
     portalPassword = ""    
 }
