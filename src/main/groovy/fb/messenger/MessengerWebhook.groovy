@@ -2,12 +2,15 @@ package fb.messenger
 
 import grails.web.Action
 import grails.web.api.WebAttributes
+import groovy.util.logging.Slf4j
 
 /**
  * Created by jonathantse on 6/7/2017.
  */
 
+@Slf4j
 trait MessengerWebhook implements WebAttributes {
+    def fbService;
     abstract receiveMessage(def facebookEvent);
 
     @Action
@@ -33,7 +36,7 @@ trait MessengerWebhook implements WebAttributes {
                 String timeOfEvent = entry.time;
 
                 entry.messaging.each() { event ->
-                    if (event.message) {
+                    if (event.message || event.postback) {
                         receiveMessage(event);
                     } else {
                         log.info("Webhook received unknown event: ${event}");

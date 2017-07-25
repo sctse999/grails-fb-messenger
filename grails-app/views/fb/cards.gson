@@ -15,6 +15,7 @@ json {
                         elements.collect() {
                             [
                                     title    : "${it.title}",
+                                    "subtitle": "${it.subtitle}",
 
                                     image_url: "${it.imageUrl}",
 

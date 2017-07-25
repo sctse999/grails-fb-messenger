@@ -36,6 +36,34 @@ class FbService {
         }
     }
 
+    def getUserProfile(String userId) {
+        def result = [:];
+
+        HTTPBuilder httpBuilder = new HTTPBuilder(fbMessengerConfig.baseUrl)
+        setProxy(httpBuilder)
+
+        httpBuilder.request(Method.GET, ContentType.JSON) {
+            headers.'Content-Type' = 'application/json'
+
+            uri.path = fbMessengerConfig.userProfileApi + "${userId}"
+
+            uri.query = [
+                    fields: 'first_name,last_name,profile_pic,locale,timezone,gender',
+                    access_token: fbMessengerConfig.pageAccessToken
+            ]
+
+            response.success = { resp, json ->
+                result = [resp: resp, json: json]
+            }
+
+            response.failure = { resp, json ->
+                result = [resp: resp, json: json]
+            }
+        }
+
+        return result;
+    }
+
     void sendMessage(ResponseSpeech responseSpeech, String recipientId) {
         responseSpeech.speech.each() {
             if (StringUtils.isNotBlank(it)) {

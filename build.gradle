@@ -10,7 +10,7 @@ buildscript {
     }
 }
 
-version "0.1"
+version "0.2"
 group "org.grails.plugins"
 
 apply plugin:"eclipse"
@@ -80,4 +80,8 @@ grailsPublish {
     developers = [sctse999:"Jonathan Tse"]
     portalUser = ""
     portalPassword = ""    
+}
+
+bintray {
+    override = true
 }
