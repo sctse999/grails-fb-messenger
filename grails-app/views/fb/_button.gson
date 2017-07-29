@@ -1,0 +1,22 @@
+import ai.api.model.ResponseMessage
+import org.apache.commons.validator.routines.UrlValidator
+
+model {
+    ResponseMessage.ResponseCard.Button button
+}
+
+json {
+    String[] schemes = ["http","https"];
+    UrlValidator urlValidator = new UrlValidator(schemes);
+
+    title button.text
+
+    if (urlValidator.isValid(button.postback)) {
+        type 'web_url'
+        url button.postback
+        webview_height_ratio 'tall'
+    } else {
+        type 'postback'
+        payload button.postback
+    }
+}

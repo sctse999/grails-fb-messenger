@@ -1,0 +1,12 @@
+import ai.api.model.ResponseMessage
+
+model {
+    ResponseMessage.ResponseCard responseCard
+}
+
+json {
+    title responseCard.title
+    subtitle responseCard.subtitle
+    image_url responseCard.imageUrl
+    buttons tmpl.button(responseCard.buttons)
+}

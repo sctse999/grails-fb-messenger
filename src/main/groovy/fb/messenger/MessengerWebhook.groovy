@@ -10,7 +10,7 @@ import groovy.util.logging.Slf4j
 
 @Slf4j
 trait MessengerWebhook implements WebAttributes {
-    def fbService;
+    FbService fbService;
     abstract receiveMessage(def facebookEvent);
 
     @Action
