@@ -11,7 +11,12 @@ import groovy.util.logging.Slf4j
 @Slf4j
 trait MessengerWebhook implements WebAttributes {
     FbService fbService;
+    FbUser currentFbUser;
     abstract receiveMessage(def facebookEvent);
+
+    def addUser(Long senderId) {
+        fbService.addUser(senderId);
+    }
 
     @Action
     def validateWebHook() {
@@ -35,13 +40,20 @@ trait MessengerWebhook implements WebAttributes {
                 String pageId = entry.id
                 String timeOfEvent = entry.time;
 
-                entry.messaging.each() { event ->
-                    if (event.message || event.postback) {
-                        receiveMessage(event);
-                    } else {
-                        log.info("Webhook received unknown event: ${event}");
+                try {
+                    entry.messaging.each() { event ->
+                        if (event.message || event.postback) {
+                            println event;
+                            currentFbUser = addUser(Long.valueOf(event.sender.id));
+                            receiveMessage(event);
+                        } else {
+                            log.info("Webhook received unknown event: ${event}");
+                        }
                     }
+                } catch (Exception e) {
+                    log.error("Unknown error has occurred", e);
                 }
+
             }
 
             render ""

@@ -1,4 +1,5 @@
 import ai.api.model.ResponseMessage
+import grails.util.Holders
 import org.apache.commons.validator.routines.UrlValidator
 
 model {
@@ -8,13 +9,17 @@ model {
 json {
     String[] schemes = ["http","https"];
     UrlValidator urlValidator = new UrlValidator(schemes);
+    String webviewHeightRatio = Holders.config.fbMessenger.webviewHeightRatio
 
     title button.text
 
     if (urlValidator.isValid(button.postback)) {
         type 'web_url'
         url button.postback
-        webview_height_ratio 'tall'
+        if (webviewHeightRatio) {
+            webview_height_ratio webviewHeightRatio
+        }
+
     } else {
         type 'postback'
         payload button.postback

@@ -19,7 +19,6 @@ class ViewHelperSpec extends Specification {
     def cleanup() {
     }
 
-
     void "test render fb card url button"() {
         when:
             String cardJson = '{"type":1,"platform":"facebook","title":"Taxi","subtitle":"Available from getting to and out the airport","imageUrl":"http://n.sinaimg.cn/translate/20151006/PQrV-fximeyk8799105.jpg","buttons":[{"text":"Details","postback":"https://www.hongkongairport.com/chi/transport/to-from-airport/taxi.html"}]}'
@@ -40,7 +39,7 @@ class ViewHelperSpec extends Specification {
 
             jsonResult.message.attachment.payload.elements.first().buttons.first().type == 'web_url'
             jsonResult.message.attachment.payload.elements.first().buttons.first().url == 'https://www.hongkongairport.com/chi/transport/to-from-airport/taxi.html'
-            jsonResult.message.attachment.payload.elements.first().buttons.first().webview_height_ratio == 'tall'
+            jsonResult.message.attachment.payload.elements.first().buttons.first().webview_height_ratio == 'full'
     }
 
     void "test render fb card text button"() {

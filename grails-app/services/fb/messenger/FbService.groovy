@@ -4,12 +4,15 @@ import ai.api.model.ResponseMessage.ResponseCard
 import ai.api.model.ResponseMessage.ResponseImage
 import ai.api.model.ResponseMessage.ResponseQuickReply
 import ai.api.model.ResponseMessage.ResponseSpeech
+import com.google.gson.Gson
+import com.google.gson.JsonObject
 import grails.transaction.Transactional
 import grails.util.Holders
 import groovyx.net.http.ContentType
 import groovyx.net.http.HTTPBuilder
 import groovyx.net.http.Method
 import org.apache.commons.lang.StringUtils
+import org.codehaus.groovy.runtime.InvokerHelper
 
 @Transactional
 class FbService {
@@ -36,13 +39,29 @@ class FbService {
         }
     }
 
-    def getUserProfile(String userId) {
-        def result = [:];
+
+    def addUser(Long userId) {
+        FbUser fbUser = FbUser.findByFbUserId(userId)
+
+        if (!fbUser) {
+            log.info("New user ${userId}");
+            FbUserProfile fbUserProfile = getUserProfile(userId);
+            fbUser = new FbUser(fbUserId: userId);
+            InvokerHelper.setProperties(fbUser, fbUserProfile.properties)
+            fbUser.save(flush:true,failOnError: true);
+        }
+
+        return fbUser;
+    }
+
+
+    FbUserProfile getUserProfile(Long userId) {
+        FbUserProfile fbUserProfile;
 
         HTTPBuilder httpBuilder = new HTTPBuilder(fbMessengerConfig.baseUrl)
         setProxy(httpBuilder)
 
-        httpBuilder.request(Method.GET, ContentType.JSON) {
+        httpBuilder.request(Method.GET, ContentType.TEXT) {
             headers.'Content-Type' = 'application/json'
 
             uri.path = fbMessengerConfig.userProfileApi + "${userId}"
@@ -52,16 +71,18 @@ class FbService {
                     access_token: fbMessengerConfig.pageAccessToken
             ]
 
-            response.success = { resp, json ->
-                result = [resp: resp, json: json]
+            response.success = { resp, reader ->
+                Gson gson = new Gson();
+                fbUserProfile = gson.fromJson(reader.text, FbUserProfile.class);
+
             }
 
             response.failure = { resp, json ->
-                result = [resp: resp, json: json]
+                log.error("Error getting user profile for ID ${userId}")
             }
         }
 
-        return result;
+        return fbUserProfile;
     }
 
     void sendMessage(ResponseSpeech responseSpeech, String recipientId) {

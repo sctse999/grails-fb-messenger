@@ -10,7 +10,7 @@ buildscript {
     }
 }
 
-version "0.2"
+version "0.4"
 group "org.grails.plugins"
 
 apply plugin:"eclipse"
@@ -83,5 +83,5 @@ grailsPublish {
 }
 
 bintray {
-    override = true
+//    override = true
 }

@@ -9,3 +9,6 @@ build/
 .project
 .settings
 .classpath
+runTest.sh
+
+src/test/groovy/fb/messenger/FbServiceSpec.groovy

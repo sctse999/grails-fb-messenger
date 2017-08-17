@@ -84,6 +84,20 @@ environments:
         dataSource:
             dbCreate: update
             url: jdbc:h2:mem:testDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
+
+        fbMessenger:
+            verifyToken: ${VERIFY_TOKEN}
+            pageAccessToken: ${PAGE_ACCESS_TOKEN}
+            baseUrl: 'https://graph.facebook.com'
+            sendApi: '/v2.9/me/messages'
+            userProfileApi: '/v2.9/'
+            webviewHeightRatio: full
+
+        proxy:
+            enabled: true
+            host: 'proxy'
+            port: 8888
+
     production:
         dataSource:
             dbCreate: none
